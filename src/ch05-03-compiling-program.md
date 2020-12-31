@@ -22,7 +22,7 @@ Untracked files:
 nothing added to commit but untracked files present (use "git add" to track)
 ```
 
-Add all the files by running `git add .gitignore Cargo.toml src/` and commit by running `git commit -m "Added files to helloworld."`.
+Add all the files by running `git add .gitignore Cargo.toml src/main.rs` and commit by running `git commit -m "Added files to helloworld." .gitignore Cargo.toml src/main.rs`
 
 There is only one more thing that must be done to set up your program. Go to the `Cargo.toml` of your project and add 
 
@@ -42,35 +42,11 @@ To be able to access your program from redox, it must be added to both the build
 #acid = {}
 #binutils = {}
 contain = {}
-coreutils = {}
-#dash = {}
-extrautils = {}
-#games = {}
-#gcc = {}
-#gnu-binutils = {}
-#gnu-make = {}
-installer = {}
-ion = {}
-#lua = {}
-netstack = {}
-netutils = {}
-#newlib = {}
-orbdata = {}
-orbital = {}
-orbterm = {}
-orbutils = {}
-#pixelcannon = {}
-pkgutils = {}
-ptyd = {}
-randd = {}
-redoxfs = {}
-#rust = {}
-smith = {}
-#sodium = {}
+...
 userutils = {}
 ```
 
-Under `userutils = {}` add a line for your own program:
+Under `userutils = {}` add a line for your own helloworld program:
 
 ```toml
 userutils = {}
@@ -82,6 +58,10 @@ Now when building the filesystem, redox will look for a `helloworld` binary.
 With the file system in order, you can now add your program to the build process by adding a recipie. Spoilers: this is the easy part.
 
 Under `redox/cookbook/recipes/`, make a new directory called helloworld. In helloworld, create a file called `recipe.sh`.
+cd redox/cookbook/recipes/
+mkdir helloworld
+cd helloworld
+touch recipe.sh
 
 Remember the git repository `~/Projects/helloworld/`? Its about to be relevant. In the file `recipe.sh`, write
 
@@ -97,4 +77,21 @@ Go up to your `redox/` directory and run `make all`. Once it finishes running, r
 
 ```shell
 Hello, world!
+```
+
+## Step Four: Iterate Build and Run Your Project
+
+After modifying your project's helloworld/src/main.rs, you will want to build and run helloworld without having to rebuild the entire redox os again.  The best way to do is follows:
+
+```bash
+cd redox/
+make env
+cd redox/cookbook/
+./repo.sh helloworld
+make mount
+```
+
+Copy the helloworld binary to redox mounted partition and chmod +x helloworld
+```bash
+make qemu
 ```
