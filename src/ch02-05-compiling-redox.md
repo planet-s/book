@@ -10,6 +10,31 @@ $ make all
 
 Give it a while. Redox is big.
 
+
+Changing Redox Filesystem Size
+------------------------------
+"make all" generates a diskimage with the default filesystem size 256MB.
+
+You are likely to want to increase this default size 256MB
+edit the file redox/mk/config.mk
+and change:
+```sh
+FILESYSTEM_SIZE?=256
+```
+To 20GB:
+```sh
+FILESYSTEM_SIZE?=20480
+```
+
+Then "make -B all" after that to ensure it rebuilds everything.
+
+This will hopefully give you enough space to install
+more packages inside this image for example:
+```sh
+$ pkg install gcc git ssh rust64
+```
+
+
 Running Redox
 -------------
 
